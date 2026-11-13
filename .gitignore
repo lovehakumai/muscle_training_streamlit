@@ -1,0 +1,9 @@
+# AI担当：課題環境・生成物・接続用の秘密情報をGitの対象外にする。
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+.streamlit/secrets.toml
+.env
+.env.*

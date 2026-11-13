@@ -1,0 +1,134 @@
+[
+  {
+    "case": "未選択",
+    "result": "PASS",
+    "details": "案内1件、表0件"
+  },
+  {
+    "case": "先頭ゼロ・引用符内カンマ・空欄・NA",
+    "result": "PASS",
+    "details": [
+      [
+        "0012",
+        "a,b",
+        ""
+      ],
+      [
+        "0013",
+        "NA",
+        "001.50"
+      ]
+    ]
+  },
+  {
+    "case": "別の読み取り方法で正常入力を比較",
+    "result": "PASS",
+    "details": "同じセル値"
+  },
+  {
+    "case": "UTF-8 BOM",
+    "result": "PASS",
+    "details": [
+      [
+        "0012",
+        "a,b",
+        ""
+      ],
+      [
+        "0013",
+        "NA",
+        "001.50"
+      ]
+    ]
+  },
+  {
+    "case": "日本語",
+    "result": "PASS",
+    "details": [
+      [
+        "0001",
+        "あいう"
+      ]
+    ]
+  },
+  {
+    "case": "引用符内改行",
+    "result": "PASS",
+    "details": [
+      [
+        "0001",
+        "a\nb"
+      ]
+    ]
+  },
+  {
+    "case": "CRLF",
+    "result": "PASS",
+    "details": [
+      [
+        "0001",
+        "ok"
+      ]
+    ]
+  },
+  {
+    "case": "ヘッダーのみ",
+    "result": "PASS",
+    "details": []
+  },
+  {
+    "case": "0バイト",
+    "result": "PASS",
+    "details": "エラー1件、表0件、未処理例外なし"
+  },
+  {
+    "case": "空の列名",
+    "result": "PASS",
+    "details": "エラー1件、表0件、未処理例外なし"
+  },
+  {
+    "case": "重複した列名",
+    "result": "PASS",
+    "details": "エラー1件、表0件、未処理例外なし"
+  },
+  {
+    "case": "列数不足",
+    "result": "PASS",
+    "details": "エラー1件、表0件、未処理例外なし"
+  },
+  {
+    "case": "列数超過",
+    "result": "PASS",
+    "details": "エラー1件、表0件、未処理例外なし"
+  },
+  {
+    "case": "閉じていない引用符",
+    "result": "PASS",
+    "details": "エラー1件、表0件、未処理例外なし"
+  },
+  {
+    "case": "非UTF-8",
+    "result": "PASS",
+    "details": "エラー1件、表0件、未処理例外なし"
+  },
+  {
+    "case": "表示操作による再実行",
+    "result": "PASS",
+    "details": "同じセル値、実行回数3"
+  },
+  {
+    "case": "ファイル差し替え",
+    "result": "PASS",
+    "details": "新しい1行だけ表示"
+  },
+  {
+    "case": "正常から不正な入力へ差し替え",
+    "result": "PASS",
+    "details": "古い表を表示しない"
+  },
+  {
+    "case": "選択解除",
+    "result": "PASS",
+    "details": "案内へ戻る"
+  }
+]

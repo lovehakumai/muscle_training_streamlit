@@ -1,0 +1,129 @@
+# d_01の技術検証
+
+実施者はAI、実施日は2026-11-13（日本時間）です。本人の操作や理解を確認した結果ではありません。本番の完成コードを置かず、一時領域で必要な入力と表示の実現性を確認しました。
+
+## 目次
+
+- [環境と入力](#環境と入力)
+
+- [実行と結果](#実行と結果)
+
+- [確認した範囲](#確認した範囲)
+
+- [依存と根拠](#依存と根拠)
+
+- [未確認](#未確認)
+
+- [用語](#用語)
+
+## 環境と入力
+
+| 項目 | 実測または実際の入力 |
+|---|---|
+| OS | macOS 26.6.2、ビルド25G83 |
+| Python | 既存の `/usr/local/bin/python3`、3.12.0 |
+| パッケージ管理 | uv 0.13.7 |
+| 直接依存 | Streamlit 1.67.0、pandas 3.1.1 |
+| 仮想環境 | `/private/tmp/muscle-csv-verify/.venv` |
+| 入力 | AIが作った架空のCSVのバイト列。2列または3列で、文字列、空欄、引用符、改行、ヘッダーや列数の不備を含む |
+| 一時コード | `/private/tmp/muscle-csv-verify/preview_probe.py` と `verify_probe.py`。本番・教材・本人の解答として配布しない |
+| クラウド | Snowflakeや有料APIは未接続。課金操作なし |
+
+## 実行と結果
+
+| 実行・操作 | 実際の結果 |
+|---|---|
+| `UV_CACHE_DIR=/private/tmp/muscle-csv-uv-cache uv venv --no-config --python /usr/local/bin/python3 /private/tmp/muscle-csv-verify/.venv` | 独立環境を作成 |
+| `uv pip compile --python-version 3.12 --generate-hashes` による一時依存一覧の作成 | 33パッケージを解決。実際の実行では一時入力ファイル・出力パスとPyPIのURLも指定 |
+| 一時環境へ `uv pip sync --require-hashes` | 固定した33パッケージを導入。既存Python環境は変更しない |
+| `STREAMLIT_BROWSER_GATHER_USAGE_STATS=false /private/tmp/muscle-csv-verify/.venv/bin/python /private/tmp/muscle-csv-verify/verify_probe.py` | 終了コード0、`passed: 19` |
+| 一時アプリを `python -m streamlit run` で127.0.0.1:18543に限定して起動 | `/_stcore/health` はHTTP 200、本文 `ok`。プロセスの終了まで確認 |
+| 診断用の別のカウンターをAppTestで実行 | 初期表示と2回のクリックの動作を確認。解答は問題文に掲載しない |
+| 固定33パッケージの名前と版をOSVに照会 | 該当する情報の返却0件。公開されていない脆弱性や将来の状態は確認対象外 |
+| プロジェクトの `.venv` に固定依存をオフラインで再現し、同じ検証を実行 | 19項目が再度PASS。版は1.67.0・3.1.1で一致 |
+| `uv pip check --python .venv/bin/python` | 33パッケージを確認し、`All installed packages are compatible` |
+
+検証コマンドではuvのキャッシュを一時領域に指定し、パッケージの取得先は公開PyPIを明示しました。AppTestの起動時に `missing ScriptRunContext` の警告が出ましたが、テスト対象アプリに未処理例外はなく、19項目の検証は終了コード0で完了しています。
+
+## 確認した範囲
+
+機械可読の実測結果は[verification-results.json](verification-results.json)です。画面操作はAppTestで模擬し、実ブラウザで人がクリックした結果とは区別しています。
+
+| 番号 | 入力または操作 | 検証したこと | 結果 |
+|---|---|---|---|
+| 1 | ファイル未選択 | 案内を表示し、表を出さない | PASS |
+| 2 | 先頭ゼロ、引用符内カンマ、空欄、文字列NA | 入力されたセル値を維持した表になる | PASS |
+| 3 | 同じ正常入力を別の方法で読む | 標準csvを使う経路とpandasの経路でセル値が一致 | PASS |
+| 4 | UTF-8 BOMあり | 先頭の列名とセル値を確認 | PASS |
+| 5 | 日本語 | 対象の文字を保持 | PASS |
+| 6 | 引用符内の改行 | 一つのセルの内容として扱える | PASS |
+| 7 | CRLF | 行とセルの内容を確認 | PASS |
+| 8 | ヘッダーのみ | データ0行の表として扱える | PASS |
+| 9 | 0バイト | エラー1件、表0件、未処理例外なし | PASS |
+| 10 | 空の列名 | エラー1件、表0件、未処理例外なし | PASS |
+| 11 | 重複した列名 | エラー1件、表0件、未処理例外なし | PASS |
+| 12 | 列数不足 | エラー1件、表0件、未処理例外なし | PASS |
+| 13 | 列数超過 | エラー1件、表0件、未処理例外なし | PASS |
+| 14 | 閉じていない引用符 | エラー1件、表0件、未処理例外なし | PASS |
+| 15 | 非UTF-8 | 今回の入力範囲ではエラーとして扱える | PASS |
+| 16 | 表示用チェックボックスの操作 | 再実行後も同じセル値を確認できる | PASS |
+| 17 | 別の正常ファイルへ差し替え | 新しい入力だけが表示される | PASS |
+| 18 | 正常入力から不正入力へ差し替え | 古い表を出さず、エラーを表示 | PASS |
+| 19 | ファイル選択の解除 | 表を出さず案内に戻る | PASS |
+
+これは実現性の確認であり、本人へ出した本番の仕様・採点基準ではありません。全ての境界をそのまま最初の白紙課題へ追加する決定ではありません。白紙の具体的な条件は、学んだ範囲で後に公開します。
+
+```mermaid
+flowchart TD
+    A["AIが用意した入力"] --> B["一時実装をAppTestで実行"]
+    B --> C["表・エラー・再実行後の状態を確認"]
+    C --> D["19項目の実測結果を保存"]
+    E["localhostの起動確認"] --> F["正常応答とプロセス終了を確認"]
+```
+
+## 依存と根拠
+
+課題ブランチのルートに、直接依存を記した `requirements.in` と、全33パッケージの版・ハッシュを記した `requirements.lock` を置きます。検証で使った固定結果を保存したものです。
+
+導入したパッケージのメタデータで、StreamlitはApache-2.0、pandasはBSD-3-Clause、どちらもPython 3.11以上を要件とすることを確認しました。公式アドバイザリも閲覧しました。OSVへの照会で送ったものは公開パッケージ名と版だけです。
+
+参考にした公式情報（2026-11-13確認）：
+
+- [Streamlitのローカル導入](https://docs.streamlit.io/get-started/installation/command-line)
+
+- [Streamlitのファイル入力](https://docs.streamlit.io/develop/api-reference/widgets/st.file_uploader)
+
+- [StreamlitのAppTest](https://docs.streamlit.io/develop/api-reference/app-testing/st.testing.v1.apptest)
+
+- [Pythonのcsv](https://docs.python.org/3.12/library/csv.html)
+
+- [pandasのread_csv](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html)
+
+- [uvの依存固定](https://docs.astral.sh/uv/pip/compile/)
+
+- [Streamlitのアドバイザリ](https://github.com/streamlit/streamlit/security/advisories)
+
+- [pandasのアドバイザリ](https://github.com/pandas-dev/pandas/security/advisories)
+
+- [OSVの照会API](https://google.github.io/osv.dev/post-v1-querybatch/)
+
+## 未確認
+
+| 対象 | いつ確認するか | 誰が何を実行するか |
+|---|---|---|
+| 本人のPython・CSV・再実行の理解 | 今回の知識確認 | 本人が3問へ回答し、AIが根拠を記録 |
+| 実ブラウザからのファイル選択と表示 | ハンズオン公開後 | 本人が教材と指定入力を動かして観察し、記録を提出 |
+| ハンズオンの教材コードと手順全体 | 知識確認の回答を受けた後、教材公開前 | AIが別題材の教材を実行し、指定操作と別入力で検証 |
+| Excel、2ファイルの照合 | その機能を扱う回 | AIが指定環境で正常・境界・失敗時を検証 |
+| Snowflake・dbt | その機能を扱う回 | 本人と無料トライアルの残高・期限を再確認し、AIが必要最小限で別途検証 |
+| 本人が書く本番の部品 | 白紙実装の提出後 | AIが公開済み条件で実行し、既存の部品との接続も確認 |
+
+未確認を、動作した・理解した・課題が完了したという記録に置き換えません。
+
+## 用語
+
+| 用語 | 平易な説明 |
+|---|---|
+| AppTest | ブラウザの代わりにPythonから画面操作と表示を調べるStreamlitの仕組み |
+| 一時実装 | 実現性だけを確認するために別の場所に置いた実装 |
+| ハッシュ | 導入するファイルの内容が固定結果と一致するか確かめる値 |
