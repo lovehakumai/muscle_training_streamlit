@@ -16,6 +16,28 @@
 
 ## 比較と決定
 
+2026-11-13の初回は、課金不可の条件でこのMacのローカルを選定した。Snowflakeは無料トライアルの残高・期限を本人確認済みだが、この回では接続しない。Pythonは既存の3.12.0を使い、既存のPython環境やdbtを変更しない。
+
+| 用途 | 比較した方法 | 採否と理由・引き受ける不便 |
+|---|---|---|
+| 環境と依存の管理 | 既存uvによる独立環境と依存固定／標準venvとpip | AIは初回の環境に既存uv 0.13.7を選定。版とハッシュの固定ができるため。uvの操作が増えるので、環境操作は学習の採点対象にしない |
+| CSVと表の実現性検証 | Python標準csvと表への変換／pandasの読み取り | 一時検証で両経路を比較した。学習では両者の入力と処理の役割を分けて説明する。本人の本番実装の方法を先に指定した決定ではない |
+| 表示と操作 | Streamlit／PythonのCLIのみ | 表示と再実行の検証にはStreamlit、読み取りの比較にはCLIを使用。CLIでの成功を画面操作の成功には置き換えない |
+
+初回の検証でStreamlit 1.67.0、pandas 3.1.1を実際に導入した。依存は全33パッケージの版とハッシュを固定する。課題ブランチの `requirements.in` を直接依存、`requirements.lock` を間接依存を含む固定結果として扱い、`uv pip sync --require-hashes` で独立環境へ導入する。
+
+導入したメタデータで、StreamlitはApache-2.0、pandasはBSD-3-Clause、いずれもPython要件は3.11以上と確認した。両プロジェクトの公式アドバイザリを閲覧し、固定した33パッケージの名前・版をOSVへ照会した結果、該当する公開情報の返却は0件だった。これは今回の照会範囲の結果であり、依存の安全性全体や将来の状態を検証したものではない。
+
+公式根拠（2026-11-13参照）：[Streamlitのローカル導入](https://docs.streamlit.io/get-started/installation/command-line)、[uvの依存固定](https://docs.astral.sh/uv/pip/compile/)、[Pythonのcsv](https://docs.python.org/3.12/library/csv.html)、[pandasのread_csv](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html)、[Streamlitのアドバイザリ](https://github.com/streamlit/streamlit/security/advisories)、[pandasのアドバイザリ](https://github.com/pandas-dev/pandas/security/advisories)、[OSVの照会API](https://google.github.io/osv.dev/post-v1-querybatch/)。
+
+```mermaid
+flowchart LR
+    A["既存Pythonとuv"] --> B["独立したローカル環境"]
+    C["版とハッシュを固定した依存"] --> B
+    B --> D["CSVの読み取りとStreamlitの操作を検証"]
+    E["無料トライアル・課金不可"] --> F["Snowflakeを使う回に別途確認"]
+```
+
 | 確認すること | 残す内容 |
 |---|---|
 | 目的と制約 | 作る部品、学習対象、費用、端末、運用の条件 |
@@ -47,3 +69,5 @@ flowchart TD
 環境の動作は[検証記録](verification.md)へ残す。ホストとコンテナなど、異なる環境での結果を混同しない。パッケージ管理や補助ツールは、それぞれの役割を説明してから導入する。
 
 環境手順が長くなった場合に限り、別の環境ガイドへ分けてここからリンクする。未選定の段階で、特定技術用の設定ファイルや依存を追加しない。
+
+初回の課題ブランチでは、ルートで `.venv` を作り、固定依存を導入する手順を課題のREADMEに置く。仮想環境・一時キャッシュ・秘密情報はGitに含めない。知識確認の回答時点では依存の導入やサーバーの起動を本人に要求しない。Snowflakeへの接続・dbtの導入は初回のローカル環境手順に含めない。

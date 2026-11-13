@@ -10,7 +10,20 @@
 
 ## 現在の状態
 
-新しい作品・教材・開発環境の実行検証は未実施。この文書は記録の方法を示すもので、検証結果ではない。ひな形の文書チェックと、新しい作品の動作検証は区別する。
+2026-11-13、最初のCSVプレビューの実現性をAIがローカルの一時領域で検証した。本番アプリとハンズオン教材はまだ作成していない。Snowflake・dbtの接続や実行も行っていない。
+
+| 項目 | 実際の確認 |
+|---|---|
+| 環境 | macOS 26.6.2、Python 3.12.0、Streamlit 1.67.0、pandas 3.1.1、uv 0.13.7 |
+| 実行場所 | `/private/tmp/muscle-csv-verify` の独立仮想環境。既存のPython環境とは分離 |
+| 入力と実施者 | AIが作った架空のCSVと一時検証アプリ。本人の操作結果ではない |
+| 実行 | `STREAMLIT_BROWSER_GATHER_USAGE_STATS=false /private/tmp/muscle-csv-verify/.venv/bin/python /private/tmp/muscle-csv-verify/verify_probe.py` |
+| 結果 | 正常・境界・失敗時・再実行の19項目がPASS |
+| サーバー | 一時アプリを127.0.0.1:18543で起動。`/_stcore/health` はHTTP 200、本文 `ok`。検証後に終了を確認 |
+| 補足 | 診断用の別のカウンター画面も初期表示と2回の操作をAppTestで検証。問題文には解答を掲載しない |
+| 未確認 | 人が実ブラウザで操作した結果、Excel、Snowflake、dbt、本番コードの動作 |
+
+詳細は[task/d_01の検証記録](https://github.com/lovehakumai/muscle_training_streamlit/blob/task/d_01/tasks/d_01/verification.md)に保存する。一時実装は本番や教材の解答として配布しない。
 
 ## 実行時に残すこと
 
