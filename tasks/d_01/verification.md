@@ -107,6 +107,12 @@ flowchart TD
 
 - [OSVの照会API](https://google.github.io/osv.dev/post-v1-querybatch/)
 
+## 解説と追加確認の実測
+
+2026-11-13、プロジェクトの `.venv/bin/python`（Python 3.12.0）で、[bytes・strの解説](guide/01-bytes-and-text.md)の例を実行した。海の型名、文字とUTF-8のバイトの長さ、バイト表現、復号、型オブジェクトと型の名前を確認し、解説の実測欄へ出力を記載した。別入力sky・空文字・空についてUTF-8変換の往復も確認した。本人の観察結果ではない。
+
+[追加の知識確認](knowledge-check-02.md)のK04〜K06のコードも同じ環境で実行確認した。K05のpandasは3.1.1。問題の出力の解答は掲載せず、未回答の状態を保持している。新たな依存の追加、Snowflakeへの接続、課金操作は行っていない。
+
 ## 未確認
 
 | 対象 | いつ確認するか | 誰が何を実行するか |
