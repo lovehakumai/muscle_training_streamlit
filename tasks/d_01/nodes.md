@@ -28,6 +28,9 @@ print([value is None for value in values])
 None -> None型, 文字列として扱われない、データがない状態の型
 として扱われる
 
+出力予想
+[False, False, True]
+
 ## K03:  次のStreamlitアプリを開き、Add を押して処理が終わった後、もう一度 Add を押したとします。2回目の操作が終わった時の表示は何になりますか。理由を1〜2文で説明してください。
 
 ```python
