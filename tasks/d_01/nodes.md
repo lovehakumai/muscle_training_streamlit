@@ -46,3 +46,49 @@ st.write(count)
 2回目は1になる。なぜならstreamlitは実行ごとにスクリプトを全て再実行するから。count=0で最初に定義しているので何度やり直してもcountは0からのスタートになる。
 
 
+## K04
+次のコードの出力2行を予想し、行・列の数え方の理由を1文で説明してください。
+
+```python
+# AI担当：観測メモを使う知識確認のコード。本番の解答ではない。
+import csv
+from io import StringIO
+
+rows = list(csv.reader(StringIO('station,note\nA,"cool, windy"\n')))
+print(len(rows))
+print(len(rows[1]))
+```
+
+コード
+len(rows) : 2, /nで区切られる。2要素, newline引数で改行のコードの扱いが変わる, 基本は ""とするのがいい、なぜなら、\rと\r\nの場合、\rは改行として認められず、\r\nは\nに変換される。
+len(rows[1]) : 16, 「A,"cool, windy"\n」の文字数。
+
+## K05
+次のコードの出力1行を予想してください。読み取り後の item が文字列か数値かも答え、その理由を1文で説明してください。
+
+```python
+# AI担当：小さな物品記録を使う知識確認のコード。本番の解答ではない。
+from io import StringIO
+import pandas as pd
+
+frame = pd.read_csv(StringIO("item,quantity\n004,2\n"))
+print(frame.loc[0, "item"])
+```
+
+frame.loc[0, "item"] : ["004", "2"]
+read_csvはcsv.readと異なり ","と改行を読み解き要素に分けることができる。
+
+検証環境のpandasは3.1.1です。読み込み方を変更するコードや本番の設計判断は求めていません。
+
+## K06
+次のコードの出力2行を予想し、理由を1文で説明してください。
+```python
+# AI担当：短い観察メモを使う知識確認のコード。本番の解答ではない。
+from io import BytesIO
+
+source = BytesIO(b"sun")
+print(source.read())
+print(source.read())
+```
+１行目 : sunの文字列をバイト変換した値が表示される(readはメモリに全ての値を展開する)
+2行目 : 同様
