@@ -12,6 +12,8 @@ K06の回答から、メモリ上のデータと読み取り位置を整理す�
 
 - [読み直しと全体の取得](#読み直しと全体の取得)
 
+- [ファイル入力とgetvalue](#ファイル入力とgetvalue)
+
 - [任意の確認と未確認](#任意の確認と未確認)
 
 - [用語](#用語)
@@ -74,6 +76,21 @@ b'abcde' 5
 `seek(0)` で読む位置を先頭へ戻せます。`getvalue()` はBytesIOに入っている内容全体を取得し、現在位置は変更しません。同じ入力を読み直す時に、どの操作が位置へ影響するかを区別します。
 
 参考：[Python公式BytesIO](https://docs.python.org/3.12/library/io.html#io.BytesIO)、[IOBase.seek](https://docs.python.org/3.12/library/io.html#io.IOBase.seek)、[IOBase.tell](https://docs.python.org/3.12/library/io.html#io.IOBase.tell)。2026-11-14確認。
+
+## ファイル入力とgetvalue
+
+ハンズオンでは、[メモファイルの教材](../handson/state_lab.py)でStreamlitのファイル入力を扱います。これは単一CSVの入力を学ぶために必要な操作の説明で、新しい知識確認の問題は追加しません。
+
+| 操作 | この教材で受け取るもの・役割 |
+|---|---|
+| `st.file_uploader(...)` | 未選択ならNone、選択後はUploadedFileというファイルに似たオブジェクト |
+| `uploaded is None` | ファイルが選択されているかを確認する |
+| `uploaded.name` | 選択したファイルの名前 |
+| `uploaded.getvalue()` | 入っているバイト列の全体 |
+
+UploadedFileはBytesIOを継承しています。ファイルオブジェクトそのもの、名前というstr、内容というbytesのどれを扱っているかを区別します。教材ではメモの名前・型・バイト数を表示し、CLIのCSV読み取りとは別の操作として観察します。
+
+参考：[Streamlit公式file_uploader](https://docs.streamlit.io/develop/api-reference/widgets/st.file_uploader)。2026-11-16確認。本人がファイル入力を使った理解や、本番コードの実装はハンズオン以降で確認します。
 
 ## 任意の確認と未確認
 

@@ -1,0 +1,25 @@
+# AI担当：公開したハンズオンS01・S02・W01だけの採点表。本人は開かない。
+stage: handson
+published_on: '2026-11-16'
+source: guide/handson.md
+criteria:
+  S01:
+    public_requirement: 'CLI教材を変更前・変更後に実行し、値・型・構造・読み取り位置を観察する'
+    reference: 'guide/handson.md#s01観測記録をcliで調べる'
+    inputs: ['配布した観測記録', 'FIRST_SITE: 015から027', 'READ_SIZE: 3から7']
+    evidence: ['handson/reading_lab.py', 'submit/reading-before.txt', 'submit/reading-after.txt', 'submit/notes.md']
+    check: '指定変更と両出力、入力と観察の記録を確認。提出時の教材を実行し、元データ・型・構造・位置に対する記録の整合を調べる'
+    allowed: '記録の書式は自由。文字・バイト、構造、読み取り位置、型推論と値保持について実測が辿れる。指定していない境界の追加実装は要求しない'
+  S02:
+    public_requirement: 'Streamlit教材でファイル入力・同じタブと別タブの状態・不正な数値入力を観察し、初期値も変更する'
+    reference: 'guide/handson.md#s02メモファイルと状態を調べる'
+    inputs: ['配布したobservation-note.txt', '増やす数2', '不正な入力oops', 'INITIAL_COUNT: 0から10', '同じタブと新しいタブ']
+    evidence: ['handson/state_lab.py', 'submit/notes.md']
+    check: '指定された操作・入力・各表示の記録、初期値の変更を確認。提出コードをAppTestで動かす結果と、本人のブラウザ観察を区別して照合する'
+    allowed: 'ファイル名・型・バイト数、通常変数・保存値、不正入力時のエラーと後続表示、変更後の同一タブと新規タブの記録が辿れる。画面収録は不要'
+  W01:
+    public_requirement: '3つの観点を、自分の実測と教材の処理を対応させて説明する'
+    reference: 'guide/handson.md#w01実測と処理を結び付ける'
+    evidence: ['submit/answers.md', 'submit/notes.md', 'submit/reading-before.txt', 'submit/reading-after.txt']
+    check: 'aは識別用の値と読み取り、bはreadの結果と位置、cは同一タブ・別タブの保存値について、実測の根拠と対応する処理の説明を確認'
+    allowed: '各1〜3文を目安とするが文数だけで合否を付けない。説明の言い回しは自由。解説参照可。本人の実測と整合しない一般論だけを観察の提出とはしない'
