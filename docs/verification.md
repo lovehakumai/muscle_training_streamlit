@@ -10,7 +10,7 @@
 
 ## 現在の状態
 
-2026-11-13、最初のCSVプレビューの実現性をAIがローカルの一時領域で検証した。本番アプリとハンズオン教材はまだ作成していない。Snowflake・dbtの接続や実行も行っていない。
+2026-11-13、最初のCSVプレビューの実現性をAIがローカルの一時領域で検証した。本番アプリはまだ作成していない。2026-11-16に別題材のハンズオン教材も作成し、別途13項目と起動・停止を検証した。Snowflake・dbtの接続や実行は行っていない。下表は初回の一時検証の結果。
 
 | 項目 | 実際の確認 |
 |---|---|
@@ -24,6 +24,10 @@
 | 未確認 | 人が実ブラウザで操作した結果、Excel、Snowflake、dbt、本番コードの動作 |
 
 詳細は[task/d_01の検証記録](https://github.com/lovehakumai/muscle_training_streamlit/blob/task/d_01/tasks/d_01/verification.md)に保存する。一時実装は本番や教材の解答として配布しない。
+
+2026-11-16のハンズオンはPython 3.12.0・pandas 3.1.1・Streamlit 1.67.0で検証。プロジェクトのルートから、一時領域の検証コードを `.venv/bin/python /private/tmp/d01-handson-20261116/verify.py` で実行し、終了コード0、13項目全てPASSを確認した。指定された教材の変更も一時コピーで検証し、本人の観察や回答のファイルは作っていない。教材のlocalhost起動は127.0.0.1:18501でHTTP 200・本文ok、終了も確認した。
+
+[ハンズオンの実測記録](https://github.com/lovehakumai/muscle_training_streamlit/blob/task/d_01/tasks/d_01/handson-verification.json)は課題ブランチに保存する。AIの実測と、これから本人が行うブラウザ操作・記述・本番実装の結果を区別する。
 
 ## 実行時に残すこと
 
