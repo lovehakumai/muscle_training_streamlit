@@ -29,6 +29,12 @@
 
 [ハンズオンの実測記録](https://github.com/lovehakumai/muscle_training_streamlit/blob/task/d_01/tasks/d_01/handson-verification.json)は課題ブランチに保存する。AIの実測と、これから本人が行うブラウザ操作・記述・本番実装の結果を区別する。
 
+2026-11-16、uvの共有キャッシュを使って依存管理を移行した。`uv sync --locked --no-python-downloads` と `uv pip check --python .venv/bin/python` は終了コード0。既存33パッケージの版と本人の編集中ファイルのハッシュが一致した。ipykernel 7.4.0で一時カーネルを起動し、プロジェクトのPython・主要依存・計算結果42・正常終了を確認した。環境・入力・コマンド・出力・未確認の詳細は[環境ガイド](environment.md)へ記録する。
+
+同日、Pythonを3.12.16へ更新した。`uv run --locked python --version` は `Python 3.12.16`、依存の整合性確認は成功。59パッケージの版と本人の編集中コードを保持した。元の教材を一時コピーで13項目検証し、ipykernelの起動・実行・終了も確認した。[環境ガイドの更新記録](environment.md#pythonのセキュリティ更新)に、初回と更新後を区別して残す。
+
+同日、本人の3.13系最新版の指定に合わせて3.13.18へ更新した。`uv run --locked python --version` は `Python 3.13.18`。依存59パッケージの版と本人の編集を保持し、元の教材13項目とipykernelの起動・計算・終了を確認した。[3.13系への移行記録](environment.md#python-313系への移行)を参照。
+
 ## 実行時に残すこと
 
 | 項目 | 記録する内容 |

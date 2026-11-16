@@ -83,7 +83,7 @@ flowchart TD
 
 ## 依存と根拠
 
-課題ブランチのルートに、直接依存を記した `requirements.in` と、全33パッケージの版・ハッシュを記した `requirements.lock` を置きます。検証で使った固定結果を保存したものです。
+初回検証では `requirements.in` と `requirements.lock` に全33パッケージの版・ハッシュを保存しました。2026-11-16にuvのプロジェクト管理へ移行し、現在はルートの `pyproject.toml` と `uv.lock` を使います。旧ファイルはGit履歴に保持しています。既存33パッケージの版の維持とipykernel追加の実測は[環境ガイド](../../docs/environment.md)を参照してください。
 
 導入したパッケージのメタデータで、StreamlitはApache-2.0、pandasはBSD-3-Clause、どちらもPython 3.11以上を要件とすることを確認しました。公式アドバイザリも閲覧しました。OSVへの照会で送ったものは公開パッケージ名と版だけです。
 

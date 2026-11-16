@@ -1,0 +1,17 @@
+# AI担当：学習対象外のプロジェクト依存と開発用環境をuvで管理する。
+[project]
+name = "muscle-training-streamlit"
+version = "0.1.0"
+requires-python = ">=3.13.18,<3.14"
+dependencies = [
+    "streamlit==1.67.0",
+    "pandas==3.1.1",
+]
+
+[tool.uv]
+package = false
+
+[dependency-groups]
+dev = [
+    "ipykernel==7.4.0",
+]

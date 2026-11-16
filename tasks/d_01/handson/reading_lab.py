@@ -1,11 +1,12 @@
+# %%
 # AI担当：観測記録をCLIで調べる教材。本番のアップロード・表示処理には流用しない。
 import csv
 from io import BytesIO, StringIO
 
 import pandas as pd
 
-FIRST_SITE = "015"
-READ_SIZE = 3
+FIRST_SITE = "027"
+READ_SIZE = 7
 
 sample = (
     "station,note,temperature\n"
@@ -48,3 +49,5 @@ print("inferred note missing:", inferred["note"].isna().tolist())
 print("preserved note:", preserved["note"].tolist())
 print("inferred temperature missing:", inferred["temperature"].isna().tolist())
 print("preserved temperature:", preserved["temperature"].tolist())
+
+# %%

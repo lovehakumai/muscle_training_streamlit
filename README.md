@@ -28,7 +28,7 @@ CSV・Excelの一覧を整形し、差分や不備を調べるツールを、自
 | 学習の主軸 | dbt・Snowflakeのデータエンジニアとしての成長と、Streamlitの実務的な理解 |
 | 最初の到達点 | 下記のAI案を相談中。MVPは未合意 |
 | 実行環境・費用 | このMacのローカルから開始。Snowflakeは無料トライアル残高・期限を本人確認済み、課金不可。今回はSnowflake未接続 |
-| 採用版・依存管理 | 初回の検証はPython 3.12.0、Streamlit 1.67.0、pandas 3.1.1。独立環境と固定依存で再現する |
+| 採用版・依存管理 | Python 3.13.18、Streamlit 1.67.0、pandas 3.1.1、開発用ipykernel 7.4.0。uvの共有キャッシュと独立した `.venv` を使用。ルートで `uv sync --locked`。操作は[環境ガイド](docs/environment.md)を参照 |
 | 教材・起動手順 | [ハンズオン](https://github.com/lovehakumai/muscle_training_streamlit/blob/task/d_01/tasks/d_01/guide/handson.md)にCLIと画面の起動・操作・終了を記載。本番アプリは未実装 |
 | 学習課題・理解度 | [d_01](https://github.com/lovehakumai/muscle_training_streamlit/tree/task/d_01/tasks/d_01)の全8項目を受領。K02・K03は今回の問題の範囲で確認済み、他の6項目をハンズオンへ反映。学習後の操作・記述は未提出 |
 

@@ -136,25 +136,27 @@ st.write(count)
 
 後で環境を再現する場合の操作は、プロジェクトのルートで以下を1操作ずつ行います。実施時にはAIがその段階の教材と合わせて案内します。
 
-1. 既存Pythonで独立環境を作ります。
+1. 固定された依存と独立環境を用意します。開発用ipykernelも含みます。
 
    ```sh
-   uv venv --python /usr/local/bin/python3 .venv
+   uv sync --locked
    ```
 
-2. 固定された依存だけを導入します。
+2. 実際の版を確認します。
 
    ```sh
-   uv pip sync --python .venv/bin/python --require-hashes requirements.lock
+   uv run --locked python -c 'import streamlit, pandas, ipykernel; print(streamlit.__version__, pandas.__version__, ipykernel.__version__)'
    ```
 
-3. 実際の版を確認します。
+Python 3.13.18、Streamlit 1.67.0、pandas 3.1.1、ipykernel 7.4.0をこのMacで確認しました。uvは `.python-version` のPythonを使い、`uv.lock` の依存を `.venv` に導入します。共有キャッシュとIDEでのカーネル選択は[環境ガイド](../../docs/environment.md)を参照してください。Python更新後は既存のNotebook・Interactive Windowのカーネルを停止し、`.venv/bin/python` を選び直して起動してください。別環境の起動を検証済みとは扱いません。教材の起動・終了とURLはguide/handson.mdに記載しています。
 
-   ```sh
-   .venv/bin/python -c 'import streamlit, pandas; print(streamlit.__version__, pandas.__version__)'
-   ```
-
-Python 3.12.0、Streamlit 1.67.0、pandas 3.1.1を検証しました。手順1のPythonの場所はこのMacで確認したものです。別環境の起動を検証済みとは扱いません。教材の起動・終了とURLはguide/handson.mdに記載しています。環境を別の場所へ再現する場合にだけ、上の依存導入手順を使います。
+```mermaid
+flowchart LR
+    A["pyproject.toml・uv.lock・.python-version"] --> B["uv sync --locked"]
+    C["uvの共有キャッシュ"] --> B
+    B --> D["プロジェクト専用 .venv"]
+    D --> E["教材またはIDEのカーネルとして利用"]
+```
 
 ## Gitの進め方
 

@@ -1,0 +1,28 @@
+[1] 文字とバイト
+text type: str
+raw type: bytes
+text length: 60
+raw length: 60
+
+[2] 読み取り位置
+before: 0
+first: b'sta' position: 3
+rest: b'tion,note,temperature\n015,"clear, calm",\n016,NA,0\n017,,8\n' position: 60
+again: b'' position: 60
+restored equals sample: True
+
+[3] CSVの構造
+header: ['station', 'note', 'temperature']
+record count: 3
+first record: ['015', 'clear, calm', '']
+first record fields: 3
+
+[4] 表の値と型
+inferred station: np.int64(15)
+inferred station type: int64
+preserved station: '015'
+preserved station type: str
+inferred note missing: [False, True, True]
+preserved note: ['clear, calm', 'NA', '']
+inferred temperature missing: [True, False, False]
+preserved temperature: ['', '0', '8']
