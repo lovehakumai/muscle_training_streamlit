@@ -92,3 +92,39 @@ print(source.read())
 ```
 １行目 : sunの文字列をバイト変換した値が表示される(readはメモリに全ての値を展開する)
 2行目 : 同様
+
+
+## K07
+次のコードでは何が表示されますか。最後の print("done") まで進むかについても、理由を1文で説明してください。
+```python
+# AI担当：数量入力を使う知識確認の別題材コード。本番の解答ではない。
+try:
+    amount = int("two")
+    print(amount)
+except ValueError:
+    print("invalid")
+print("done")
+```
+int("two")は文字列をint型に変更できないエラーになる。exceptの時点でValueErrorが出るので、
+それ以降のコードは止まりdoneは表示されない
+
+## K08
+次のStreamlitアプリを開き、同じブラウザタブで Visit を押し、処理が終わってからもう一度押したとします。2回目の操作後の表示と、その理由を1〜2文で説明してください。途中でページの再読み込みやセッションの切断はしない前提です。
+
+```python
+# AI担当：訪問数を使う知識確認の別題材コード。本番の解答ではない。
+import streamlit as st
+
+if "visits" not in st.session_state:
+    st.session_state["visits"] = 0
+
+if st.button("Visit"):
+    st.session_state["visits"] += 1
+
+st.write(st.session_state["visits"])
+```
+２回目の表示 : 1 
+理由 : 
+session_stateはStreamlitを起動しているセッション中にて有効な変数。別タブを開くことは別々のセッションを開始することになる。このコードだと、最初にsession_stateの有無を確認して、存在しなければ 0 を渡すというロジックになっている。
+
+別々のセッションだとsession_state["visits]は定義されていない状態から開始するため。毎回0から始まる。
